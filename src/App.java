@@ -1,5 +1,7 @@
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -28,6 +30,7 @@ public class App extends JFrame {
     private Vector<Contact> contacts;
     private int nextID = 0;
     private JTable table;
+    private final String FILENAME = ".informazioni.txt";
 
     App() {
         readContactsFromFile();
@@ -89,7 +92,9 @@ public class App extends JFrame {
         this.add(bottomToolBar, BorderLayout.SOUTH);
 
         this.setSize(getPreferredSize());
-        this.setVisible(rootPaneCheckingEnabled);
+        this.setTitle("Applicazione Rubrica");
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setVisible(true);
     }
 
     public static void main(String[] args) {
@@ -127,10 +132,9 @@ public class App extends JFrame {
             currentcContact = new Contact(c.name, c.surname, c.address, c.phoneNumber, c.age, c.id);
         }
         JDialog dialog = new JDialog(this, "Scheda contatto");
-        dialog.setSize(getPreferredSize());
         dialog.setVisible(rootPaneCheckingEnabled);
 
-        JPanel mainPanel = new JPanel(new GridLayout(5, 2));
+        JPanel mainPanel = new JPanel(new GridBagLayout());
         JLabel labelName = new JLabel("Nome: ");
         JLabel labelSurname = new JLabel("Cognome: ");
         JLabel labelAddress = new JLabel("Indirizzo: ");
@@ -147,21 +151,105 @@ public class App extends JFrame {
             textFieldAge = new JTextField(String.valueOf(currentcContact.age));
         }
 
+        int x, y;
+        int gap = 3;
+
         // Name
-        mainPanel.add(labelName);
-        mainPanel.add(textFieldName);
+        x = 0;
+        y = 0;
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = x;
+        gbc.gridy = y;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(gap, gap + 2 * gap * x, gap, gap);
+        mainPanel.add(labelName, gbc);
+
+        x = 1;
+        y = 0;
+        gbc = new GridBagConstraints();
+        gbc.gridx = x;
+        gbc.gridy = y;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(gap, gap + 2 * gap * x, gap, gap);
+        mainPanel.add(textFieldName, gbc);
+
         // Surname
-        mainPanel.add(labelSurname);
-        mainPanel.add(textFieldSurname);
+        x = 0;
+        y = 1;
+        gbc = new GridBagConstraints();
+        gbc.gridx = x;
+        gbc.gridy = y;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(gap, gap + 2 * gap * x, gap, gap);
+        mainPanel.add(labelSurname, gbc);
+        
+        x = 1;
+        y = 1;
+        gbc = new GridBagConstraints();
+        gbc.gridx = x;
+        gbc.gridy = y;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(gap, gap + 2 * gap * x, gap, gap);
+        mainPanel.add(textFieldSurname, gbc);
+
         // Address
-        mainPanel.add(labelAddress);
-        mainPanel.add(textFieldAddress);
+        x = 0;
+        y = 2;
+        gbc = new GridBagConstraints();
+        gbc.gridx = x;
+        gbc.gridy = y;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(gap, gap + 2 * gap * x, gap, gap);
+        mainPanel.add(labelAddress, gbc);
+
+        x = 1;
+        y = 2;
+        gbc = new GridBagConstraints();
+        gbc.gridx = x;
+        gbc.gridy = y;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(gap, gap + 2 * gap * x, gap, gap);
+        mainPanel.add(textFieldAddress, gbc);
+        
         // Phone Number
-        mainPanel.add(labelPhoneNumber);
-        mainPanel.add(textFieldPhoneNumber);
+        x = 0;
+        y = 3;
+        gbc = new GridBagConstraints();
+        gbc.gridx = x;
+        gbc.gridy = y;
+        gbc.ipadx = 100;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(gap, gap + 2 * gap * x, gap, gap);
+        mainPanel.add(labelPhoneNumber, gbc);
+
+        x = 1;
+        y = 3;
+        gbc = new GridBagConstraints();
+        gbc.gridx = x;
+        gbc.gridy = y;
+        gbc.ipadx = 100;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(gap, gap + 2 * gap * x, gap, gap);
+        mainPanel.add(textFieldPhoneNumber, gbc);
+
         // Age
-        mainPanel.add(labelAge);
-        mainPanel.add(textFieldAge);
+        x = 0;
+        y = 4;
+        gbc = new GridBagConstraints();
+        gbc.gridx = x;
+        gbc.gridy = y;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(gap, gap + 2 * gap * x, gap, gap);
+        mainPanel.add(labelAge, gbc);
+
+        x = 1;
+        y = 4;
+        gbc = new GridBagConstraints();
+        gbc.gridx = x;
+        gbc.gridy = y;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(gap, gap + 2 * gap * x, gap, gap);
+        mainPanel.add(textFieldAge, gbc);
 
         dialog.add(mainPanel);
 
@@ -240,11 +328,12 @@ public class App extends JFrame {
         bottomPanel.add(saveButton);
         bottomToolBar.add(bottomPanel);
         dialog.add(bottomToolBar, BorderLayout.SOUTH);
+        dialog.pack();
     }
 
     private void readContactsFromFile() {
         Vector<Contact> v = new Vector<Contact>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("informazioni.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILENAME))) {
             String line = reader.readLine();
             while (line != null) {
                 String[] splitLine = line.split(";");
@@ -282,7 +371,7 @@ public class App extends JFrame {
 
     private void updateFile() {
         // Write all contacts information to the file, from scratch
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("informazioni.txt", false))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILENAME, false))) {
             for (Contact c : contacts) {
                 writer.write(c.toCSVString());
                 writer.newLine();
