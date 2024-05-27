@@ -30,7 +30,7 @@ public class App extends JFrame {
     private Vector<Contact> contacts;
     private int nextID = 0;
     private JTable table;
-    private final String FILENAME = ".informazioni.txt";
+    private final String FILENAME = "informazioni.txt";
 
     App() {
         readContactsFromFile();
